@@ -8,6 +8,7 @@ import 'add_spending_screen.dart';
 import 'chart_screen.dart';
 import 'cubit/budget_cubit.dart';
 import 'cubit/budget_state.dart';
+import 'spend_list_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -27,6 +28,16 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const SpendListScreen()),
+                    );
+                  },
+                  child: const Text('Spending'),
+                ),
                 ElevatedButton(
                   onPressed: () {
                     Navigator.push(

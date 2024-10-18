@@ -18,7 +18,7 @@ class BudgetItem {
       'id': id,
       'title': title,
       'amount': amount,
-      'isBorrowed': isBorrowed,
+      'isBorrowed': isBorrowed ? 1 : 0,
       'date': date.toIso8601String(),
     };
   }
@@ -28,7 +28,7 @@ class BudgetItem {
       id: map['id'],
       title: map['title'],
       amount: map['amount'],
-      isBorrowed: map['isBorrowed'],
+      isBorrowed: map['isBorrowed'] == 1,
       date: DateTime.parse(map['date']),
     );
   }
