@@ -4,7 +4,9 @@ import { authentication, random } from "../helpers/index.js";
 
 export const register = async (req: express.Request, res: express.Response): Promise<void> => {
     try {
+        console.log(req.body, 'body')
         const { email, password, username } = req.body
+        console.log(password, 'password')
         if (!email || !password || !username) {
             res.sendStatus(400); return
         }
