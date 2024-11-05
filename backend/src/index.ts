@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import cors from 'cors';
 import mongoose from 'mongoose';
+import router from './router/index.js';
 
 const app = express();
 
@@ -24,3 +25,4 @@ server.listen(8080, () => {
 const MONGO_URL = "mongodb+srv://malay13pandit:7UGwkVzidb4mVnr5@cluster0.6bk7k.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 mongoose.Promise = Promise
 mongoose.connect(MONGO_URL)
+app.use('/', router());
