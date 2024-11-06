@@ -1,6 +1,42 @@
 import { getUsersByEmail, createUser } from "../db/users.js";
 import express, { Request, Response } from "express"
 import { authentication, random } from "../helpers/index.js";
+import { userInfo } from "os";
+
+export const login = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { email, password } = req.body;
+
+        // Validate input
+        if (!email || !password) {
+            res.status(400).json({ message: "Email, password are required." });
+            return;
+        }
+        const user = await getUsersByEmail(email).select('+authentication.salt +authentication.password');
+        if (!user) {
+            res.status(400).json({ message: "user not found" });
+            return;
+        }
+        const expectedHash = authentication(user.authentication.salt, password);
+
+        if (user.authentication.password != expectedHash) {
+            res.sendStatus(403).json({ message: "user not found" });
+            return;
+        }
+        const salt = random();
+        user.authentication.sessionToken = authentication(salt, user._id.toString())
+
+        await user.save();
+
+        res.cookie('BUDGETBUDDY_AUTH', user.authentication.sessionToken, { domain: 'localhost', path: '/' });
+        res.status(200).json(user).end();
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "An error occurred while logging the user." });
+
+    }
+}
+
 
 export const register = async (req: Request, res: Response): Promise<void> => {
     try {
