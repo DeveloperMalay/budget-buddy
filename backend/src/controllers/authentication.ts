@@ -1,13 +1,12 @@
 import { getUsersByEmail, createUser } from "../db/users.js";
-import express, { Request, Response } from "express"
+import { Request, Response } from "express"
 import { authentication, random } from "../helpers/index.js";
-import { userInfo } from "os";
+
 
 export const login = async (req: Request, res: Response): Promise<void> => {
     try {
         const { email, password } = req.body;
-
-        // Validate input
+        console.log(req.body)
         if (!email || !password) {
             res.status(400).json({ message: "Email, password are required." });
             return;
@@ -20,7 +19,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
         const expectedHash = authentication(user.authentication.salt, password);
 
         if (user.authentication.password != expectedHash) {
-            res.sendStatus(403).json({ message: "user not found" });
+            res.status(403).json({ message: "user not found" });
             return;
         }
         const salt = random();
